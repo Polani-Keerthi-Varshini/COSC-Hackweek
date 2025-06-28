@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@300;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Amazon Ember', Arial, sans-serif;
+  background: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.product-card {
+  width: 360px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: box-shadow .2s ease;
+}
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.image-wrapper {
+  width: 100%;
+  background: #f9f9f9;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+.image-wrapper img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.info {
+  padding: 16px;
+}
+.name {
+  font-size: 18px;
+  font-weight: 500;
+  color: #111;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.rating {
+  font-size: 14px;
+  color: #ffa41c;
+  display: flex;
+  align-items: center;
+}
+.rating .reviews {
+  font-size: 13px;
+  color: #0066c0;
+  margin-left: 6px;
+}
+.price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #B12704;
+  margin: 12px 0;
+}
+.delivery {
+  font-size: 14px;
+  color: #007600;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.add-cart {
+  width: 100%;
+  background: #ffd814;
+  border: 1px solid #fcd200;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.add-cart:hover {
+  background: #f7ca00;
+}

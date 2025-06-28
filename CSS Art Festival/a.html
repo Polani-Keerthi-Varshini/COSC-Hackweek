@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>RCB Dream Team | Squad Goals</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1b1a3a 0%, #d50000 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 10px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .team-logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px #0006;
+      border: 4px solid #ffd700;
+      overflow: hidden;
+    }
+    .team-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .team-name {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #ffd700;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-shadow: 1px 1px 8px #000a;
+    }
+    .slogan {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #fff;
+      opacity: 0.9;
+      margin-bottom: 18px;
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .stat-item {
+      background: rgba(0,0,0,0.25);
+      border-radius: 10px;
+      padding: 12px 20px;
+      border: 1px solid #ffd70055;
+      text-align: center;
+      min-width: 120px;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      color: #ffd700;
+      font-weight: bold;
+    }
+    .stat-label {
+      font-size: 1rem;
+      color: #fff;
+      opacity: 0.8;
+    }
+    .players-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 28px;
+      margin-top: 10px;
+    }
+    .player-card {
+      background: rgba(0,0,0,0.45);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid #ffd70055;
+      box-shadow: 0 2px 12px #0005;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative;
+    }
+    .player-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 8px 32px #0007;
+      border-color: #ffd700;
+    }
+    .player-image {
+      width: 100%;
+      height: 200px;
+      background: #222;
+      background-size: cover;
+      background-position: top center;
+      border-bottom: 2px solid #ffd70033;
+      position: relative;
+    }
+    .player-jersey {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #d50000;
+      color: #fff;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border: 2px solid #ffd700;
+      box-shadow: 0 0 10px #0007;
+      z-index: 2;
+    }
+    .player-info {
+      padding: 18px 18px 22px;
+    }
+    .player-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ffd700;
+      margin-bottom: 5px;
+    }
+    .player-role {
+      font-size: 1rem;
+      color: #fff;
+      opacity: 0.8;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .player-stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .stat {
+      text-align: center;
+      flex: 1;
+    }
+    .stat-value {
+      font-size: 1.1rem;
+      color: #ffd700;
+      font-weight: bold;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: #fff;
+      opacity: 0.7;
+    }
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: linear-gradient(135deg, #2c3e50 0%, #d50000 100%);
+      border-radius: 18px;
+      width: 95vw;
+      max-width: 480px;
+      box-shadow: 0 0 30px #000b;
+      border: 3px solid #ffd700;
+      overflow: hidden;
+      animation: modalIn 0.3s;
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px 12px;
+      background: rgba(0,0,0,0.18);
+      border-bottom: 1.5px solid #ffd70033;
+    }
+    .modal-title {
+      font-size: 1.35rem;
+      color: #ffd700;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      margin-left: 12px;
+    }
+    .close-btn:hover {
+      color: #ffd700;
+    }
+    .modal-body {
+      padding: 22px 20px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .modal-image {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 3px solid #ffd700;
+      background-size: cover;
+      background-position: top center;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 12px #0007;
+    }
+    .modal-stats {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    .modal-stat {
+      background: rgba(0,0,0,0.20);
+      border-radius: 10px;
+      padding: 12px 0;
+      text-align: center;
+      border: 1px solid #ffd70044;
+    }
+    .modal-stat-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffd700;
+      margin-bottom: 3px;
+    }
+    .modal-stat-label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    .best-performance {
+      width: 100%;
+      background: rgba(0,0,0,0.15);
+      border-radius: 10px;
+      padding: 12px 10px 10px;
+      border: 1px solid #ffd70044;
+      margin-top: 6px;
+      text-align: center;
+    }
+    .best-performance h3 {
+      color: #ffd700;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+    .best-performance p {
+      font-size: 0.98rem;
+      color: #fff;
+      opacity: 0.9;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #fff;
+      opacity: 0.6;
+      margin-top: 40px;
+      padding: 30px 0 0;
+      border-top: 1px solid #ffd70033;
+    }
+    @media (max-width: 600px) {
+      .team-name { font-size: 1.3rem; }
+      .players-grid { gap: 16px; }
+      .player-image { height: 140px; }
+      .modal-content { max-width: 99vw; }
+      .modal-image { width: 110px; height: 110px; }
+      .modal-body { padding: 16px 6px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="team-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/en/4/4c/Royal_Challengers_Bangalore_Logo.svg" alt="RCB Logo" />
+
+      </div>
+      <div class="team-name">ROYAL CHALLENGERS BANGALORE</div>
+      <div class="slogan">Play Bold, Win Gold!</div>
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value">5</div>
+          <div class="stat-label">IPL Finals</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">263</div>
+          <div class="stat-label">Highest Team Score</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">120M+</div>
+          <div class="stat-label">Fans Worldwide</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2008</div>
+          <div class="stat-label">Founded</div>
+        </div>
+      </div>
+    </header>
+    <section class="players-grid">
+      <!-- Virat Kohli -->
+      <div class="player-card" data-player="virat">
+        <div class="player-image" style="background-image:url('https://static.iplt20.com/players/210/164.png')"></div>
+        <div class="player-info">
+          <div class="player-name">Virat Kohli</div>
+          <span class="player-role">Batsman</span>
+          <div class="player-stats">
+            <div class="stat">
+              <div class="stat-value">7263</div>
+              <div class="stat-label">Runs</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">139.2</div>
+              <div class="stat-label">SR</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">18</div>
+              <div class="stat-label">Jersey</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-jersey">18</div>
+      </div>
+      <!-- Faf du Plessis -->
+      <div class="player-card" data-player="faf">
+        <div class="player-image" style="background-image:url('https://static.iplt20.com/players/210/24.png')"></div>
+        <div class="player-info">
+          <div class="player-name">Faf du Plessis</div>
+          <span class="player-role">Batsman (C)</span>
+          <div class="player-stats">
+            <div class="stat">
+              <div class="stat-value">4163</div>
+              <div class="stat-label">Runs</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">134.2</div>
+              <div class="stat-label">SR</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">18</div>
+              <div class="stat-label">Jersey</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-jersey">18</div>
+      </div>
+      <!-- Glenn Maxwell -->
+      <div class="player-card" data-player="maxwell">
+        <div class="player-image" style="background-image:url('https://static.iplt20.com/players/210/282.png')"></div>
+        <div class="player-info">
+          <div class="player-name">Glenn Maxwell</div>
+          <span class="player-role">All-rounder</span>
+          <div class="player-stats">
+            <div class="stat">
+              <div class="stat-value">2719</div>
+              <div class="stat-label">Runs</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">157.3</div>
+              <div class="stat-label">SR</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">32</div>
+              <div class="stat-label">Jersey</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-jersey">32</div>
+      </div>
+      <!-- Mohammed Siraj -->
+      <div class="player-card" data-player="siraj">
+        <div class="player-image" style="background-image:url('https://static.iplt20.com/players/210/3840.png')"></div>
+        <div class="player-info">
+          <div class="player-name">Mohammed Siraj</div>
+          <span class="player-role">Bowler</span>
+          <div class="player-stats">
+            <div class="stat">
+              <div class="stat-value">78</div>
+              <div class="stat-label">Wickets</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">7.85</div>
+              <div class="stat-label">Econ</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">13</div>
+              <div class="stat-label">Jersey</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-jersey">13</div>
+      </div>
+      <!-- Dinesh Karthik -->
+      <div class="player-card" data-player="dk">
+        <div class="player-image" style="background-image:url('https://static.iplt20.com/players/210/102.png')"></div>
+        <div class="player-info">
+          <div class="player-name">Dinesh Karthik</div>
+          <span class="player-role">Wicketkeeper</span>
+          <div class="player-stats">
+            <div class="stat">
+              <div class="stat-value">4512</div>
+              <div class="stat-label">Runs</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">132.4</div>
+              <div class="stat-label">SR</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">19</div>
+              <div class="stat-label">Jersey</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-jersey">19</div>
+      </div>
+      <!-- Harshal Patel -->
+      <div class="player-card" data-player="harshal">
+        <div class="player-image" style="background-image:url('https://static.iplt20.com/players/210/157.png')"></div>
+        <div class="player-info">
+          <div class="player-name">Harshal Patel</div>
+          <span class="player-role">Bowler</span>
+          <div class="player-stats">
+            <div class="stat">
+              <div class="stat-value">127</div>
+              <div class="stat-label">Wickets</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">8.45</div>
+              <div class="stat-label">Econ</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">9</div>
+              <div class="stat-label">Jersey</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-jersey">9</div>
+      </div>
+    </section>
+    <footer>
+      <p>© 2025 Royal Challengers Bangalore | Play Bold, Win Gold!<br>
+      Created for Squad Goals Challenge</p>
+    </footer>
+  </div>
+  <!-- Modal -->
+  <div class="modal" id="playerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Player Details</span>
+        <button class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-image" id="modalPlayerImage"></div>
+        <div class="modal-stats">
+          <div class="modal-stat">
+            <div class="modal-stat-value" id="modalMatches">-</div>
+            <div class="modal-stat-label">Matches</div>
+          </div>
+          <div class="modal-stat">
+            <div class="modal-stat-value" id="modalRuns">-</div>
+            <div class="modal-stat-label">Runs</div>
+          </div>
+          <div class="modal-stat">
+            <div class="modal-stat-value" id="modalWickets">-</div>
+            <div class="modal-stat-label">Wickets</div>
+          </div>
+          <div class="modal-stat">
+            <div class="modal-stat-value" id="modalStrikeRate">-</div>
+            <div class="modal-stat-label">Strike Rate</div>
+          </div>
+          <div class="modal-stat">
+            <div class="modal-stat-value" id="modalEconomy">-</div>
+            <div class="modal-stat-label">Economy</div>
+          </div>
+          <div class="modal-stat">
+            <div class="modal-stat-value" id="modalJersey">-</div>
+            <div class="modal-stat-label">Jersey No.</div>
+          </div>
+        </div>
+        <div class="best-performance">
+          <h3>Best Performance</h3>
+          <p id="modalBest">Loading...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Player data
+    const players = {
+      virat: {
+        name: "Virat Kohli",
+        matches: 237,
+        runs: 7263,
+        wickets: 4,
+        strikeRate: 139.2,
+        economy: "-",
+        jersey: 18,
+        best: "113 (50) vs Kings XI Punjab, 2016",
+        image: "https://static.iplt20.com/players/210/164.png"
+      },
+      faf: {
+        name: "Faf du Plessis",
+        matches: 130,
+        runs: 4163,
+        wickets: 0,
+        strikeRate: 134.2,
+        economy: "-",
+        jersey: 18,
+        best: "96 (55) vs Lucknow Super Giants, 2023",
+        image: "https://static.iplt20.com/players/210/24.png"
+      },
+      maxwell: {
+        name: "Glenn Maxwell",
+        matches: 124,
+        runs: 2719,
+        wickets: 28,
+        strikeRate: 157.3,
+        economy: 8.3,
+        jersey: 32,
+        best: "78 (40) & 2/15 vs SRH, 2021",
+        image: "https://static.iplt20.com/players/210/282.png"
+      },
+      siraj: {
+        name: "Mohammed Siraj",
+        matches: 79,
+        runs: 45,
+        wickets: 78,
+        strikeRate: 75.2,
+        economy: 7.85,
+        jersey: 13,
+        best: "4/21 vs KKR, 2023",
+        image: "https://static.iplt20.com/players/210/3840.png"
+      },
+      dk: {
+        name: "Dinesh Karthik",
+        matches: 242,
+        runs: 4512,
+        wickets: 0,
+        strikeRate: 132.4,
+        economy: "-",
+        jersey: 19,
+        best: "97* (50) vs RR, 2019",
+        image: "https://static.iplt20.com/players/210/102.png"
+      },
+      harshal: {
+        name: "Harshal Patel",
+        matches: 91,
+        runs: 274,
+        wickets: 127,
+        strikeRate: 128.5,
+        economy: 8.45,
+        jersey: 9,
+        best: "5/27 vs MI, 2021",
+        image: "https://static.iplt20.com/players/210/157.png"
+      }
+    };
+
+    // DOM elements
+    const playerCards = document.querySelectorAll('.player-card');
+    const modal = document.getElementById('playerModal');
+    const closeBtn = document.querySelector('.close-btn');
+    const modalTitle = document.querySelector('.modal-title');
+    const modalImage = document.getElementById('modalPlayerImage');
+    const modalMatches = document.getElementById('modalMatches');
+    const modalRuns = document.getElementById('modalRuns');
+    const modalWickets = document.getElementById('modalWickets');
+    const modalStrikeRate = document.getElementById('modalStrikeRate');
+    const modalEconomy = document.getElementById('modalEconomy');
+    const modalJersey = document.getElementById('modalJersey');
+    const modalBest = document.getElementById('modalBest');
+
+    playerCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const playerId = card.getAttribute('data-player');
+        const player = players[playerId];
+        if (player) {
+          modalTitle.textContent = player.name;
+          modalImage.style.backgroundImage = `url('${player.image}')`;
+          modalMatches.textContent = player.matches;
+          modalRuns.textContent = player.runs;
+          modalWickets.textContent = player.wickets;
+          modalStrikeRate.textContent = player.strikeRate;
+          modalEconomy.textContent = player.economy;
+          modalJersey.textContent = player.jersey;
+          modalBest.textContent = player.best;
+          modal.classList.add('active');
+        }
+      });
+    });
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === "Escape") {
+        modal.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
